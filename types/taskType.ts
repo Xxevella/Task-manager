@@ -10,5 +10,5 @@ export type Task = {
     status: "In Progress" | "Completed" | "Cancelled";
     file: FileInfo;
     notificationId?: string | undefined;
-    locationCoords?: {latitude: number, longitude: number};
+    locationCoords?: {latitude: number, longitude: number} | null;
 };

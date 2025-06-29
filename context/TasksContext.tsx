@@ -54,6 +54,7 @@ export function TasksProvider({children}:TasksProviderProps) {
         // task.notificationId = notificationId;
         try{
             await saveTasks([...tasks, task]);
+            console.log(task)
         }
         catch (error) {
             // if(notificationId) {

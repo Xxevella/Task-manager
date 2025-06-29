@@ -86,6 +86,7 @@ export default function AddTaskModal({
         setDateTime(new Date());
         setLocation("");
         setFile(null);
+        setLocationCoords(null);
     }
 
     const handleAdd = () => {
@@ -103,7 +104,8 @@ export default function AddTaskModal({
             location,
             addedAt: new Date().toISOString().split('.')[0],
             status: "In Progress",
-            file
+            file,
+            locationCoords
           });
         resetForm();
         onClose()
@@ -209,26 +211,26 @@ export default function AddTaskModal({
                 placeholder="or select from list"
                 style={{height: 50,borderRadius: 24, borderColor: 'blue', borderWidth: 2,marginTop: 10, padding: 10}}
               />
-              <View style={{alignItems: 'center', marginTop: 10, flexDirection: 'row'}}>
+              <View style={{alignItems: 'center', marginTop: 10, flexDirection: 'row', justifyContent: 'space-between', paddingRight: 30, paddingLeft: 10}}>
                 <TouchableOpacity
                  onPress={pickFile}
                 >
                  <Image source={require('../assets/images/attach.png')} style={{width: 30, height: 30, marginTop: 10, marginLeft: 10}} />
                 </TouchableOpacity>
+                <TouchableOpacity
+                 onPress={openMap}
+                >
+                 <Image source={require('../assets/images/location.png')} style={{width: 30, height: 30, marginTop: 10, marginLeft: 10}} />
+                </TouchableOpacity>
+              </View>
+              <View>
                 {file?.uri && (
                   <Text
                   numberOfLines={1}
                   ellipsizeMode="tail" 
-                  style={{maxWidth: 200, marginLeft: 20}}
+                  style={{maxWidth: 200}}
                   >{file.name}</Text>
                 )}
-              </View>
-              <View>
-                <TouchableOpacity
-                 onPress={openMap}
-                >
-                 <Text>Select location</Text>
-                </TouchableOpacity>
                 {locationCoords && (
                   <Text>Выбрана точка:
                      {locationCoords.latitude.toFixed(5)},

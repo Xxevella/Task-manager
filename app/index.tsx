@@ -70,6 +70,7 @@ function handleDeleteTask(taskId: string) {
   const screenWidth = Dimensions.get('window').width
 
   return (
+
     <View className="flex-1 pt-30 bg-white" style={{paddingTop: screenHight*0.07}}>
       <View className="justify-center border-2 border-blue-500 rounded-3xl h-20"
        style={{width: screenWidth*0.9, alignSelf: 'center'}}>
@@ -99,7 +100,8 @@ function handleDeleteTask(taskId: string) {
         </TouchableOpacity>
       </View>
 
-      <FlatList
+      <View style={{ flex: 1, width: screenWidth * 0.9, alignSelf: 'center', marginTop: 10, paddingBottom: 50}}>
+        <FlatList
         data={sortedTasks}
         keyExtractor={task => task.id}
         renderItem={({item}) =>{
@@ -125,6 +127,7 @@ function handleDeleteTask(taskId: string) {
           )}
         }
       />
+      </View>
       
       <AddTaskModal
        visible={isAddModalVisible}
