@@ -1,9 +1,12 @@
 import { useNotification } from "@/context/NotificationContext";
+import { FileInfo } from "@/types/fileInfo";
 import { Task } from "@/types/taskType";
 import { useEffect, useRef, useState } from "react";
+import * as DocumentPicker from 'expo-document-picker';
 import {
   Animated,
   Dimensions,
+  Image,
   Modal,
   Text,
   TextInput,
@@ -15,6 +18,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
+let height1 = height*1.31;
 
 type Props = {
     visible: boolean;
@@ -48,6 +52,7 @@ export default function TaskDetailModal({
   const [location, setLocation] = useState(task.location);
   const [status, setStatus] = useState<Status>(task.status as Status);
   const [isPickerVisible, setPickerVisible] = useState(false);
+  const [file, setFile] = useState<FileInfo>(null);
 
   const {showNotification} = useNotification();
   const slideAnimation = useRef(new Animated.Value(height)).current;
@@ -81,6 +86,20 @@ export default function TaskDetailModal({
     setPickerVisible(false);
   };
 
+  const pickFile = async () =>
+      {
+        const response = await DocumentPicker.getDocumentAsync({});
+        if(!response.canceled)
+        {
+          setFile({
+            name: response.assets[0].name,
+            uri: response.assets[0].uri,
+            size: response.assets[0].size
+          });
+          console.log(response)
+        }
+      }
+    
   const toggleStatus = () => {
     const currentIndex = statusOptions.findIndex((o) => o.label === status);
     const nextIndex = (currentIndex + 1) % statusOptions.length;
@@ -99,6 +118,7 @@ export default function TaskDetailModal({
       dateTime: dateTime.toISOString(),
       location,
       status,
+      file
     });
     onClose();
   };
@@ -113,7 +133,7 @@ export default function TaskDetailModal({
       <TouchableWithoutFeedback onPress={onClose}>
         <View
           style={{
-            flex: 1,
+            flex:1,
             backgroundColor: "white",
             justifyContent: "center",
             alignItems: "center",
@@ -123,8 +143,9 @@ export default function TaskDetailModal({
           <TouchableWithoutFeedback onPress={() => {}}>
             <Animated.View
               style={{
+                position: "absolute",
                 width: width * 0.9,
-                maxHeight: height * 0.8,
+                height: height * 0.94,
                 backgroundColor: "white",
                 borderRadius: 24,
                 padding: 20,
@@ -134,6 +155,7 @@ export default function TaskDetailModal({
                 shadowOpacity: 0.3,
                 shadowRadius: 10,
                 elevation: 10,
+                top: height * 0.04,
               }}
             >
               <Text
@@ -255,6 +277,22 @@ export default function TaskDetailModal({
                 </Text>
                 <Text style={{ fontSize: 18 }}>{status}</Text>
               </TouchableOpacity>
+
+              <View style={{alignItems: 'center', marginTop: 10, flexDirection: 'row'}}>
+                <TouchableOpacity
+                 onPress={pickFile}
+                >
+                 <Image source={require('../assets/images/attach.png')} style={{width: 30, height: 30, marginTop: 10, marginLeft: 10}} />
+                </TouchableOpacity>
+                {task.file?.uri && (
+                  <Text
+                  numberOfLines={1}
+                  ellipsizeMode="tail" 
+                  style={{maxWidth: 200, marginLeft: 20}}
+                  >{task.file.name}</Text>
+                )}
+              </View>
+
               <View
                 style={{
                   flexDirection: "row",

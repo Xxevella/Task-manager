@@ -2,6 +2,8 @@ import { Task } from "@/types/taskType";
 import { Children, createContext, use, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useNotification } from "./NotificationContext";
+import { taskNotification } from "@/functions/taskNotification";
+import Notifications from "expo-notifications";
 
 
 const StorageKey = '@tasks_storage';
@@ -20,7 +22,6 @@ type TasksProviderProps = {
 };
 
 export function TasksProvider({children}:TasksProviderProps) {
-    const [handlerMessage, setHandlerMessage] = useState<string|null>(null);
     const [tasks, setTasks] = useState<Task[]>([]);
     const {showNotification} = useNotification();
 
@@ -49,15 +50,45 @@ export function TasksProvider({children}:TasksProviderProps) {
     }
 
     const addTask = async(task: Task) => {
-        await saveTasks([...tasks, task]);
+        // const notificationId = await taskNotification(task.id, task.title, task.dateTime);
+        // task.notificationId = notificationId;
+        try{
+            await saveTasks([...tasks, task]);
+        }
+        catch (error) {
+            // if(notificationId) {
+            //     await Notifications.cancelScheduledNotificationAsync(notificationId);
+            // }
+            showNotification("Error saving tasks");
+        }
     }
 
     const updateTask = async(updatedTask: Task) => {
-        await saveTasks(tasks.map(task => task.id === updatedTask.id ? updatedTask : task));
+        // const oldTask = tasks.find(task => task.id === updatedTask.id);
+        // if(oldTask?.notificationId) {
+        //     await Notifications.cancelScheduledNotificationAsync(oldTask.notificationId);
+        // }
+        // const newNotificationId = await taskNotification(updatedTask.id, updatedTask.title, updatedTask.dateTime);
+        // updatedTask.notificationId = newNotificationId;
+        try{
+            await saveTasks(tasks.map(task => task.id === updatedTask.id ? updatedTask : task));
+        }
+        catch (error) {
+            // if(newNotificationId) {
+            //     await Notifications.cancelScheduledNotificationAsync(newNotificationId);
+            // }
+            showNotification("Error saving tasks");
+        }
     }
     const deleteTask = async(id: string) => {
-        await saveTasks((tasks.filter(task => task.id !== id)));
+        // const taskToDelete = tasks.find(task => task.id === id);
+        // if(taskToDelete?.notificationId) {
+        //     await Notifications.cancelScheduledNotificationAsync(taskToDelete.notificationId);
+        // }
+        const newTasks = tasks.filter(task => task.id !== id);
+        await saveTasks(newTasks);
     }
+    
     return(
         <TasksContext.Provider value={{tasks, addTask, updateTask, deleteTask}}>
             {children}
