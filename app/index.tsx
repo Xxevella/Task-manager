@@ -1,14 +1,13 @@
 import { TasksContext } from "@/context/TasksContext";
 import AddTaskModal from "@/modal/AddTaskModal";
+import MenuModal from "@/modal/MenuModal";
 import TaskDetailModal from "@/modal/taskDetailedModal";
 import { statusColor } from "@/types/colorType";
 import { Task } from "@/types/taskType";
 import { format } from 'date-fns';
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { useContext, useEffect, useLayoutEffect, useState } from "react";
-import { Dimensions, FlatList, Text, TouchableOpacity, View } from "react-native";
-
-
+import { Dimensions, FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
 
@@ -22,6 +21,9 @@ export default function Index() {
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [isDetailedModalVisible, setIsDetailedModalVisible] = useState(false);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const [navigateToMap, setNavigateToMap] = useState(false);
+  const [navigateToLogs, setNavigateToLogs] = useState(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -47,7 +49,40 @@ export default function Index() {
     });
     setSortedTasks(sorted);
   }
+function openMenu() {
+  setIsMenuVisible(true);
+}
 
+function closeMenu() {
+  setIsMenuVisible(false);
+}
+
+useEffect(()=>{
+  if(!isMenuVisible && navigateToMap){
+    router.push("/map")
+    setNavigateToMap(false);
+  }
+}, [isMenuVisible, navigateToMap])
+
+useEffect(()=>{
+  if(!isMenuVisible && navigateToLogs){
+    router.push("/logs")
+    setNavigateToLogs(false);
+  }
+}, [isMenuVisible, navigateToLogs])
+
+const handleMapDirect = () =>{
+  setNavigateToMap(true);
+  closeMenu()
+}
+
+const handleLogsDirect = () =>{
+  setNavigateToLogs(true);
+  closeMenu()
+}
+const handleMenuClose = () =>{
+  setIsMenuVisible(false);
+}
 function openTaskModal(task: Task){
   setSelectedTask(task)
   setIsDetailedModalVisible(true)
@@ -73,8 +108,15 @@ function handleDeleteTask(taskId: string) {
 
     <View className="flex-1 pt-30 bg-white" style={{paddingTop: screenHight*0.07}}>
       <View className="justify-center border-2 border-blue-500 rounded-3xl h-20"
-       style={{width: screenWidth*0.9, alignSelf: 'center'}}>
+       style={{width: screenWidth*0.9, alignSelf: 'center', alignItems: 'center'}}>
         <Text className="text-3xl text-center">Task Manager</Text>
+        <TouchableOpacity onPress={openMenu} style={{position: 'absolute', top: 20, right: 10}}>
+        <Image
+          source={require('../assets/images/menuLight.png')}
+          style={{width: 30, height: 30}}
+        />
+      </TouchableOpacity>
+      <MenuModal visible={isMenuVisible} onClose={handleMenuClose} onMapSelect={handleMapDirect} onLogsSelect={handleLogsDirect} />
       </View>
         <TouchableOpacity
          onPress={()=>setIsAddModalVisible(true)}

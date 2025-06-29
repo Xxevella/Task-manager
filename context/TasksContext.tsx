@@ -1,18 +1,19 @@
+import { Logs } from "@/types/logsType";
 import { Task } from "@/types/taskType";
-import { Children, createContext, use, useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createContext, useEffect, useState } from "react";
 import { useNotification } from "./NotificationContext";
-import { taskNotification } from "@/functions/taskNotification";
-import Notifications from "expo-notifications";
 
 
 const StorageKey = '@tasks_storage';
+const LogsStorageKey = 'logs_storage'
 
 type TasksContextType = {
     tasks: Task[];
     addTask: (task: Task) => Promise<void>;
     updateTask: (task: Task) => Promise<void>;
     deleteTask: (id: string) => Promise<void>;
+    logs: Logs[];
 };
 
 export const TasksContext = createContext<TasksContextType | undefined>(undefined)
@@ -23,6 +24,7 @@ type TasksProviderProps = {
 
 export function TasksProvider({children}:TasksProviderProps) {
     const [tasks, setTasks] = useState<Task[]>([]);
+    const [logs, setLogs] = useState<Logs[]>([]);
     const {showNotification} = useNotification();
 
     useEffect(() => {
@@ -31,6 +33,11 @@ export function TasksProvider({children}:TasksProviderProps) {
                 const storedTasks = await AsyncStorage.getItem(StorageKey);
                 if (storedTasks) {
                     setTasks(JSON.parse(storedTasks));
+                }
+                const storedLogs = await AsyncStorage.getItem(LogsStorageKey)
+                if(storedLogs)
+                {
+                    setLogs(JSON.parse(storedLogs))
                 }
             }
             catch (error) {
@@ -49,12 +56,35 @@ export function TasksProvider({children}:TasksProviderProps) {
         }
     }
 
+    const saveLogs = async(newLogs: Logs[]) =>{
+        try{
+            setLogs(newLogs);
+            await AsyncStorage.setItem(LogsStorageKey, JSON.stringify(newLogs))
+        }
+        catch(error)
+        {
+            showNotification("Error saving logs")
+        }
+    }
+
+    const AddLog = async(action: Logs["action"], task:Task) =>{
+        const newLog: Logs = {
+                id: `${task.id}_log`,
+                timestamp: new Date().toISOString(),
+                action,
+                taskId:task.id,
+                taskTitle: task.title
+        };
+        const updatedLogs = [newLog, ...logs];
+        await saveLogs(updatedLogs);
+    }
+
     const addTask = async(task: Task) => {
         // const notificationId = await taskNotification(task.id, task.title, task.dateTime);
         // task.notificationId = notificationId;
         try{
             await saveTasks([...tasks, task]);
-            console.log(task)
+            await AddLog("added", task)
         }
         catch (error) {
             // if(notificationId) {
@@ -73,6 +103,7 @@ export function TasksProvider({children}:TasksProviderProps) {
         // updatedTask.notificationId = newNotificationId;
         try{
             await saveTasks(tasks.map(task => task.id === updatedTask.id ? updatedTask : task));
+            await AddLog("updated", updatedTask)
         }
         catch (error) {
             // if(newNotificationId) {
@@ -82,16 +113,25 @@ export function TasksProvider({children}:TasksProviderProps) {
         }
     }
     const deleteTask = async(id: string) => {
-        // const taskToDelete = tasks.find(task => task.id === id);
+        const taskToDelete = tasks.find(task => task.id === id);
         // if(taskToDelete?.notificationId) {
         //     await Notifications.cancelScheduledNotificationAsync(taskToDelete.notificationId);
         // }
-        const newTasks = tasks.filter(task => task.id !== id);
-        await saveTasks(newTasks);
+        try{
+          const newTasks = tasks.filter(task => task.id !== id);
+          await saveTasks(newTasks);
+          if(taskToDelete)
+          {
+              AddLog("deleted", taskToDelete)
+          }
+        }
+        catch{
+            showNotification("Error deleting tasks");
+        }
     }
     
     return(
-        <TasksContext.Provider value={{tasks, addTask, updateTask, deleteTask}}>
+        <TasksContext.Provider value={{tasks, addTask, updateTask, deleteTask, logs}}>
             {children}
         </TasksContext.Provider>
     );

@@ -15,6 +15,7 @@ import {
   View,
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import MapSelectorModal from "./MapSelectorModal";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -45,6 +46,7 @@ export default function TaskDetailModal({
   onClose,
   onSave,
   onDelete,
+
 }: Props) {
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.description);
@@ -57,6 +59,15 @@ export default function TaskDetailModal({
   const {showNotification} = useNotification();
   const slideAnimation = useRef(new Animated.Value(height)).current;
 
+  const [mapVisible, setMapVisible] = useState(false);
+  const [locationCoords, setLocationCoords] = useState<{latitude: number, longitude: number} | null>(null);
+  const openMap = () => setMapVisible(true);
+  const closeMap = () => setMapVisible(false);
+  const onLocationConfirm = (coord:{latitude: number, longitude: number}) => {
+      setLocationCoords(coord);
+      closeMap();
+    }
+
   useEffect(() => {
     if (visible) {
       setTitle(task.title);
@@ -64,6 +75,7 @@ export default function TaskDetailModal({
       setDateTime(new Date(task.dateTime));
       setLocation(task.location);
       setStatus(task.status as Status);
+      setLocationCoords(task.locationCoords!);
 
       Animated.timing(slideAnimation, {
         toValue: 0,
@@ -277,21 +289,38 @@ export default function TaskDetailModal({
                 </Text>
                 <Text style={{ fontSize: 18 }}>{status}</Text>
               </TouchableOpacity>
-
-              <View style={{alignItems: 'center', marginTop: 10, flexDirection: 'row'}}>
-                <TouchableOpacity
-                 onPress={pickFile}
-                >
-                 <Image source={require('../assets/images/attach.png')} style={{width: 30, height: 30, marginTop: 10, marginLeft: 10}} />
-                </TouchableOpacity>
-                {task.file?.uri && (
+                <View style={{alignItems: 'center', marginTop: 10, flexDirection: 'row', justifyContent: 'space-between', paddingRight: 30, paddingLeft: 10}}>
+                   <TouchableOpacity
+                    onPress={pickFile}
+                   >
+                    <Image source={require('../assets/images/attach.png')} style={{width: 30, height: 30, marginTop: 10, marginLeft: 10}} />
+                   </TouchableOpacity>
+                   <TouchableOpacity
+                    onPress={openMap}
+                   >
+                    <Image source={require('../assets/images/location.png')} style={{width: 30, height: 30, marginTop: 10, marginLeft: 10}} />
+                   </TouchableOpacity>
+                </View>
+                <View style={{marginTop:10, marginLeft: 20}}>
+                  {(file?.uri || task.file?.uri) && (
                   <Text
                   numberOfLines={1}
                   ellipsizeMode="tail" 
-                  style={{maxWidth: 200, marginLeft: 20}}
-                  >{task.file.name}</Text>
+                  style={{maxWidth: 200}}
+                  >{file?.name || task.file?.name}</Text>
                 )}
-              </View>
+                {locationCoords && (
+                  <Text>Выбрана точка:
+                     {locationCoords.latitude.toFixed(5)},
+                     {locationCoords.longitude.toFixed(5)}
+                  </Text>
+                )}
+                </View>
+                <MapSelectorModal 
+                 visible={mapVisible}
+                 initialLocation={locationCoords}
+                 onCancel={() => setMapVisible(false)}
+                 onConfirm={onLocationConfirm} />
 
               <View
                 style={{
