@@ -1,7 +1,6 @@
-import ErrorHandler from "@/components/errorHandler";
 import { useNotification } from "@/context/NotificationContext";
 import { TasksContext } from "@/context/TasksContext";
-import { HeaderTitle } from "@react-navigation/elements";
+import { useTheme } from "@/context/ThemeContext";
 import { useNavigation } from "expo-router";
 import { useContext, useLayoutEffect } from "react";
 import { View } from "react-native";
@@ -9,17 +8,25 @@ import MapView, { MapMarker, Marker } from "react-native-maps";
 
 export default function Map() {
     const navigation = useNavigation();
+    const {theme} = useTheme();
     const context = useContext(TasksContext);
     const {showNotification} = useNotification();
     if(!context) {
         return showNotification("Context not found");
     }
     const {tasks} = context;
+    const isDark = theme === "dark"
+    const textColor = isDark ? "white" : "black"
+    const backgroundColor = isDark ? "#121212" : "white"
 
     useLayoutEffect(() => {
         navigation.setOptions({
-          headerTitle: "Map"
-        });
+          headerTitle: "Map",
+          headerStyle:{
+                backgroundColor: backgroundColor
+              },
+              headerTintColor: textColor
+        },);
       })
 
     const taskWithCoords = tasks.filter(task => task.locationCoords !== null);

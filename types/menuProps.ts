@@ -3,4 +3,6 @@ export type menuProps = {
     onClose: () => void;
     onMapSelect: () => void;
     onLogsSelect: () => void;
+    onToggleTheme: () => void;
+    theme: "light" | "dark";
 };

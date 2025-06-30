@@ -1,4 +1,5 @@
 import { TasksContext } from "@/context/TasksContext";
+import { useTheme } from "@/context/ThemeContext";
 import AddTaskModal from "@/modal/AddTaskModal";
 import MenuModal from "@/modal/MenuModal";
 import TaskDetailModal from "@/modal/taskDetailedModal";
@@ -15,7 +16,8 @@ export default function Index() {
   const context = useContext(TasksContext);
   if (!context) {
     return <Text>Loading...</Text>;
-  } 
+  }
+  const {theme, toggleTheme} = useTheme() 
   const {tasks, addTask, updateTask, deleteTask} = context;
   const [sortedTasks, setSortedTasks] = useState(tasks);
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
@@ -25,6 +27,15 @@ export default function Index() {
   const [navigateToMap, setNavigateToMap] = useState(false);
   const [navigateToLogs, setNavigateToLogs] = useState(false);
 
+
+  //Styles
+  const isDark = theme === "dark"
+  const backgroundColor = isDark ? "#121212" : "white"
+  const textColor = isDark ? "white" : "black"
+  const borderColor = isDark ? "#5599FF" : "#3B82F6"
+
+  const menuIcon = isDark ? require("@/assets/images/menuDark.png") : require("@/assets/images/menuLight.png")
+  
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -106,17 +117,33 @@ function handleDeleteTask(taskId: string) {
 
   return (
 
-    <View className="flex-1 pt-30 bg-white" style={{paddingTop: screenHight*0.07}}>
-      <View className="justify-center border-2 border-blue-500 rounded-3xl h-20"
-       style={{width: screenWidth*0.9, alignSelf: 'center', alignItems: 'center'}}>
-        <Text className="text-3xl text-center">Task Manager</Text>
-        <TouchableOpacity onPress={openMenu} style={{position: 'absolute', top: 20, right: 10}}>
+    <View style={{flex:1, backgroundColor: backgroundColor, paddingTop: screenHight*0.07}}>
+      <View style={{
+          justifyContent: "center",
+          borderWidth: 2,
+          borderColor: borderColor,
+          borderRadius: 24,
+          height: 80,
+          width: screenWidth * 0.9,
+          alignSelf: "center",
+          alignItems: "center",
+          position: "relative",
+        }}
+        >
+        <Text style={{color:textColor, fontSize: 24}}>Task Manager</Text>
+        <TouchableOpacity onPress={openMenu} style={{position: 'absolute', top: 25, right: 10}}>
         <Image
-          source={require('../assets/images/menuLight.png')}
+          source={menuIcon}
           style={{width: 30, height: 30}}
         />
       </TouchableOpacity>
-      <MenuModal visible={isMenuVisible} onClose={handleMenuClose} onMapSelect={handleMapDirect} onLogsSelect={handleLogsDirect} />
+      <MenuModal visible={isMenuVisible}
+       onClose={handleMenuClose} 
+       onMapSelect={handleMapDirect} 
+       onLogsSelect={handleLogsDirect} 
+       onToggleTheme={toggleTheme}
+       theme={theme}
+      />
       </View>
         <TouchableOpacity
          onPress={()=>setIsAddModalVisible(true)}
@@ -151,20 +178,21 @@ function handleDeleteTask(taskId: string) {
           const color = statusColor[item.status]
           return(
             <TouchableOpacity className="flex-1 flex-row justify-between items-center
-             mt-5 border-2 border-blue-500 rounded-3xl px-5"
+             mt-5 border-2 rounded-3xl px-5"
+             style={{borderColor:borderColor}}
              onPress={()=>openTaskModal(item)}
              >
               <Text
                numberOfLines={1}
                ellipsizeMode="tail" 
                className="text-lg" 
-               style={{maxWidth: screenWidth*0.12}}
+               style={{maxWidth: screenWidth*0.12, color:textColor}}
               >
                 {item.title}
               </Text>
-              <Text className="text-lg">{date}</Text>
+              <Text className="text-lg" style={{color:textColor}}>{date}</Text>
               <Text className="text-lg" style={{color: color}}>{item.status}</Text>
-              <Text className="text-lg">...</Text>
+              <Text className="text-lg" style={{color:textColor}}>...</Text>
             </TouchableOpacity>
           )}
         }

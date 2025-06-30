@@ -1,10 +1,19 @@
-import { Stack } from "expo-router";
-import React, { useEffect } from "react";
-import './global.css';
-import { TasksProvider } from "@/context/TasksContext";
 import { NotificationProvider } from "@/context/NotificationContext";
-import * as Notifications from "expo-notifications";
+import { TasksProvider } from "@/context/TasksContext";
+import { ThemeProvider } from "@/context/ThemeContext";
+import { Stack } from "expo-router";
+import './global.css';
+import { useEffect } from "react";
+import * as Notifications from 'expo-notifications';
 
+Notifications.setNotificationHandler({
+  handleNotification: async() =>({
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
+});
 
 export default function RootLayout() {
   useEffect(() => {
@@ -25,9 +34,11 @@ export default function RootLayout() {
 
   return(
     <NotificationProvider>
-      <TasksProvider>
-        <Stack/>
-      </TasksProvider>
+      <ThemeProvider>
+        <TasksProvider>
+          <Stack/>
+        </TasksProvider>
+      </ThemeProvider>
     </NotificationProvider>
   );
 }

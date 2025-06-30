@@ -5,11 +5,12 @@ type handlerProps = {
     message: string;
     duration: number | null;
     onHide: () => void;
+    backgroundColor?: string;
 }
 
 const width = Dimensions.get('window').width
 
-export default function ErrorHandler({message, duration = 3000, onHide}: handlerProps) {
+export default function ErrorHandler({message, duration = 3000, onHide, backgroundColor}: handlerProps) {
     const opacity = React.useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
@@ -37,7 +38,7 @@ export default function ErrorHandler({message, duration = 3000, onHide}: handler
             width,
             opacity,
             alignItems: 'center',
-            backgroundColor: 'red',
+            backgroundColor: backgroundColor,
             padding: 10,
             borderRadius: 8,
             zIndex: 1000,

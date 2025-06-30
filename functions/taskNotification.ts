@@ -1,4 +1,4 @@
-import Notifications from "expo-notifications";
+import * as Notifications from "expo-notifications";
 
 
 export async function taskNotification(taskId: string, taskTitle:string, taskDateString:string){
@@ -11,6 +11,11 @@ export async function taskNotification(taskId: string, taskTitle:string, taskDat
         console.log("Notification was expired")
         return
     }
+    const {status} = await Notifications.requestPermissionsAsync();
+          if(status !== "granted"){
+            alert("Notification permission not granted");
+            return;
+          }
 
     const notificationId = await Notifications.scheduleNotificationAsync({
         content: {
@@ -20,7 +25,7 @@ export async function taskNotification(taskId: string, taskTitle:string, taskDat
             priority: Notifications.AndroidNotificationPriority.HIGH,
             data: {
                 taskId: taskId
-            }
+            },
         },
         trigger: {
             type: Notifications.SchedulableTriggerInputTypes.DATE,
@@ -28,7 +33,7 @@ export async function taskNotification(taskId: string, taskTitle:string, taskDat
         }
     })
 
-    console.log("Уведомление запланировано на", notifyTime);
+    console.log("Уведомление запланировано на", notifyTime.toLocaleString());
 
     return notificationId;
 }

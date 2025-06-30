@@ -6,10 +6,10 @@ import 'react-native-get-random-values';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from 'react-native-dropdown-picker'
 import { v4 as uuidv4 } from "uuid";
-import { Label } from "@react-navigation/elements";
 import * as DocumentPicker from 'expo-document-picker';
 import { FileInfo } from "@/types/fileInfo";
 import MapSelectorModal from "./MapSelectorModal";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function AddTaskModal({
     visible,
@@ -20,6 +20,7 @@ export default function AddTaskModal({
     onClose: () => void;
     onAddTask: (newTask: Task) => void;
 }){
+    const {theme} = useTheme()
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [dateTime, setDateTime] = useState<Date>(new Date());
@@ -27,9 +28,9 @@ export default function AddTaskModal({
     const [isActivePicker, setIsActivePicker] = useState(false);
     const [open, setOpen] = useState(false);
     const [items, setItems] = useState([
-      {label: "Office", value: "office"},
-      {label: "Home", value: "home"},
-      {label: "Other", value: "other"},
+      {label: "Office", value: "Office"},
+      {label: "Home", value: "Home"},
+      {label: "Other", value: "Other"},
     ])
     const [file, setFile] = useState<FileInfo>(null);
     const [mapVisible, setMapVisible] = useState(false);
@@ -121,19 +122,27 @@ export default function AddTaskModal({
         setIsActivePicker(false);
     }
 
+    //Styles
+    const isDark = theme === "dark"
+    const backgroundColor = isDark ? "#333333" : "white"
+    const modalOverlayColor = isDark ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0.5)";
+    const textColor = isDark ? "white" : "black"
+    const attachIcon = isDark ? require("@/assets/images/attachDark.png") : require("@/assets/images/attachLight.png")
+    const locationIcon = isDark ? require("@/assets/images/locationDark.png") : require("@/assets/images/locationLight.png")
     return(
-        <Modal visible={visible} transparent animationType="none">
+      <Modal visible={visible} transparent animationType="none">
       <TouchableWithoutFeedback onPress={handleClose}>
         <View
           className="flex-1 bg-black bg-opacity-50 items-center justify-center px-5"
-          style={{ paddingVertical: 40 }}
+          style={{ paddingVertical: 40, backgroundColor: modalOverlayColor}}
         >
           <TouchableWithoutFeedback onPress={() => {}}>
             <Animated.View
               style={{
                 width: width * 0.9,
                 height: height * 0.8,
-                backgroundColor: "white",
+                backgroundColor: backgroundColor,
+                borderColor: "white",
                 borderRadius: 24,
                 padding: 20,
                 transform: [{ translateY: slideAnimation }],
@@ -144,39 +153,41 @@ export default function AddTaskModal({
                 elevation: 10,
               }}
             >
-              <Text className="text-3xl font-bold text-center text-black">
+              <Text style={{fontSize:24, alignSelf: "center", color: textColor}}>
                 Add Task
               </Text>
 
               <View>
-                <Text className="text-lg" style={{marginLeft: 10, marginTop: 10}}>Title</Text>
+                <Text style={{marginLeft: 10, marginTop: 10, color: textColor, fontSize:16}}>Title</Text>
                 <TextInput
                   value={title}
                   onChangeText={setTitle}
                   placeholder="Enter title"
-                  style={{borderRadius: 24, borderColor: 'blue', borderWidth: 2, padding: 10}}
+                  placeholderTextColor={textColor}
+                  style={{borderRadius: 24, borderColor: 'blue', borderWidth: 2, padding: 10, color:textColor}}
                 />
               </View>
 
               <View style={{marginTop: 10}}>
-                <Text className="text-lg" style={{marginLeft: 10}}>Description</Text>
+                <Text style={{marginLeft: 10, color: textColor, fontSize:16}}>Description</Text>
                 <TextInput
                   value={description}
                   onChangeText={setDescription}
                   placeholder="Enter description"
+                  placeholderTextColor={textColor}
                   multiline
                   numberOfLines={3}
-                  style={{borderRadius: 24, borderColor: 'blue', borderWidth: 2, padding: 10}}
+                  style={{borderRadius: 24, borderColor: 'blue', borderWidth: 2, padding: 10, color:textColor}}
                 />
               </View>
 
               <View style={{marginTop: 10}}>
-                <Text className="text-lg" style={{marginLeft: 10}}>Date & Time</Text>
+                <Text style={{marginLeft: 10, color: textColor, fontSize:16}}>Date & Time</Text>
                 <TouchableOpacity
                   onPress={() => setIsActivePicker(true)}
                   className="border border-blue-500 rounded-2xl px-4 py-2"
                 >
-                  <Text className="text-black" style={{borderRadius: 24, borderColor: 'blue', borderWidth: 2, padding: 10}}>
+                  <Text style={{borderRadius: 24, borderColor: 'blue', borderWidth: 2, padding: 10, color:textColor}}>
                     {dateTime.toLocaleString()}
                   </Text>
                 </TouchableOpacity>
@@ -193,12 +204,13 @@ export default function AddTaskModal({
               </View>
 
               <View style={{marginTop: 10}}>
-                <Text className="text-lg" style={{marginLeft: 10}}>Location</Text>
+                <Text style={{marginLeft: 10, color: textColor, fontSize:16}}>Location</Text>
                 <TextInput
                   value={location}
                   onChangeText={setLocation}
                   placeholder="Enter location"
-                  style={{borderRadius: 24, borderColor: 'blue', borderWidth: 2, padding: 10}}
+                  placeholderTextColor={textColor}
+                  style={{borderRadius: 24, borderColor: 'blue', borderWidth: 2, padding: 10, color:textColor}}
                 />
               </View>
               <DropDownPicker
@@ -209,18 +221,22 @@ export default function AddTaskModal({
                 setValue={setLocation}
                 setItems={setItems}
                 placeholder="or select from list"
-                style={{height: 50,borderRadius: 24, borderColor: 'blue', borderWidth: 2,marginTop: 10, padding: 10}}
+                textStyle={{color:textColor}}
+                style={{height: 50,borderRadius: 24,
+                   borderColor: 'blue', borderWidth: 2, 
+                   marginTop: 10, padding: 10, backgroundColor: backgroundColor}}
+                dropDownContainerStyle={{backgroundColor:backgroundColor, borderColor:"blue"}}
               />
               <View style={{alignItems: 'center', marginTop: 10, flexDirection: 'row', justifyContent: 'space-between', paddingRight: 30, paddingLeft: 10}}>
                 <TouchableOpacity
                  onPress={pickFile}
                 >
-                 <Image source={require('../assets/images/attach.png')} style={{width: 30, height: 30, marginTop: 10, marginLeft: 10}} />
+                 <Image source={attachIcon} style={{width: 30, height: 30, marginTop: 10, marginLeft: 10}} />
                 </TouchableOpacity>
                 <TouchableOpacity
                  onPress={openMap}
                 >
-                 <Image source={require('../assets/images/location.png')} style={{width: 30, height: 30, marginTop: 10, marginLeft: 10}} />
+                 <Image source={locationIcon} style={{width: 30, height: 30, marginTop: 10, marginLeft: 10}} />
                 </TouchableOpacity>
               </View>
               <View>
@@ -228,11 +244,11 @@ export default function AddTaskModal({
                   <Text
                   numberOfLines={1}
                   ellipsizeMode="tail" 
-                  style={{maxWidth: 200}}
+                  style={{maxWidth: 200, color:textColor}}
                   >{file.name}</Text>
                 )}
                 {locationCoords && (
-                  <Text>Выбрана точка:
+                  <Text style={{color:textColor}}>Выбрана точка:
                      {locationCoords.latitude.toFixed(5)},
                      {locationCoords.longitude.toFixed(5)}
                   </Text>
@@ -252,14 +268,14 @@ export default function AddTaskModal({
                   }}
                   style={{backgroundColor:'red', borderRadius: 24, padding: 10, width: 100, alignItems: 'center', marginTop: 20}}
                 >
-                  <Text className="text-gray-700 font-semibold">Cancel</Text>
+                  <Text style={{ color: "white", fontWeight: "bold" }}>Cancel</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   onPress={handleAdd}
                   style={{backgroundColor:'#14db19', borderRadius: 24, padding: 10, width: 100, alignItems: 'center', marginTop: 20}}
                 >
-                  <Text className="text-white font-semibold">Add Task</Text>
+                  <Text style={{ color: "white", fontWeight: "bold" }}>Add Task</Text>
                 </TouchableOpacity>
               </View>
             </Animated.View>

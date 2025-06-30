@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import MapSelectorModal from "./MapSelectorModal";
+import { useTheme } from "@/context/ThemeContext";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -48,6 +49,7 @@ export default function TaskDetailModal({
   onDelete,
 
 }: Props) {
+  const {theme} = useTheme()
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.description);
   const [dateTime, setDateTime] = useState(new Date(task.dateTime));
@@ -140,13 +142,18 @@ export default function TaskDetailModal({
     onClose();
   };
 
+  const isDark = theme === "dark"
+  const backgroundColor = isDark ? "#333333" : "white"
+  const modalOverlayColor = isDark ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0.5)";
+  const textColor = isDark ? "white" : "black"
+  const attachIcon = isDark ? require("@/assets/images/attachDark.png") : require("@/assets/images/attachLight.png")
+  const locationIcon = isDark ? require("@/assets/images/locationDark.png") : require("@/assets/images/locationLight.png")
   return (
     <Modal visible={visible} transparent animationType="none">
       <TouchableWithoutFeedback onPress={onClose}>
         <View
           style={{
             flex:1,
-            backgroundColor: "white",
             justifyContent: "center",
             alignItems: "center",
             paddingHorizontal: 20,
@@ -158,7 +165,7 @@ export default function TaskDetailModal({
                 position: "absolute",
                 width: width * 0.9,
                 height: height * 0.94,
-                backgroundColor: "white",
+                backgroundColor: backgroundColor,
                 borderRadius: 24,
                 padding: 20,
                 transform: [{ translateY: slideAnimation }],
@@ -176,27 +183,29 @@ export default function TaskDetailModal({
                   fontWeight: "bold",
                   textAlign: "center",
                   marginBottom: 15,
-                  color: "#000",
+                  color: textColor,
                 }}
               >
                 Task Details
               </Text>
 
-              <Text style={{ marginBottom: 4, fontWeight: "600", marginLeft:10,}}>Title</Text>
+              <Text style={{marginLeft: 10, marginTop: 10, color: textColor, fontSize:16}}>Title</Text>
               <TextInput
                 value={title}
                 onChangeText={setTitle}
                 placeholder="Title"
+                placeholderTextColor={textColor}
                 style={{
                   borderWidth: 2,
                   borderColor: "blue",
                   borderRadius: 20,
                   padding: 10,
                   marginBottom: 12,
+                  color:textColor
                 }}
               />
 
-              <Text style={{ marginBottom: 4, fontWeight: "600", marginLeft:10, }}>
+              <Text style={{marginLeft: 10, marginTop: 10, color: textColor, fontSize:16}}>
                 Description
               </Text>
               <TextInput
@@ -205,6 +214,7 @@ export default function TaskDetailModal({
                 placeholder="Description"
                 multiline
                 numberOfLines={3}
+                placeholderTextColor={textColor}
                 style={{
                   borderWidth: 2,
                   borderColor: "blue",
@@ -212,9 +222,10 @@ export default function TaskDetailModal({
                   padding: 10,
                   marginBottom: 12,
                   textAlignVertical: "top",
+                  color:textColor
                 }}
               />
-              <Text style={{ marginBottom: 4, fontWeight: "600", marginLeft:10, }}>
+              <Text style={{marginLeft: 10, marginTop: 10, color: textColor, fontSize:16}}>
                 Date & Time
               </Text>
               <TouchableOpacity
@@ -227,7 +238,7 @@ export default function TaskDetailModal({
                   marginBottom: 12,
                 }}
               >
-                <Text>{dateTime.toLocaleString()}</Text>
+                <Text style={{color:textColor}}>{dateTime.toLocaleString()}</Text>
               </TouchableOpacity>
               <DateTimePickerModal
                 isVisible={isPickerVisible}
@@ -237,21 +248,24 @@ export default function TaskDetailModal({
                 onCancel={() => setPickerVisible(false)}
               />
 
-              <Text style={{ marginBottom: 4, fontWeight: "600", marginLeft:10, }}>Location</Text>
+              <Text style={{marginLeft: 10, marginTop: 10, color: textColor, fontSize:16}}>Location</Text>
               <TextInput
                 value={location}
                 onChangeText={setLocation}
                 placeholder="Location"
+                placeholderTextColor={textColor}
                 style={{
                   borderWidth: 2,
                   borderColor: "blue",
                   borderRadius: 20,
                   padding: 10,
                   marginBottom: 12,
+                  color:textColor
+                  
                 }}
               />
 
-              <Text style={{ marginBottom: 4, fontWeight: "600", marginLeft:10, }}>Added At</Text>
+              <Text style={{marginLeft: 10, marginTop: 10, color: textColor, fontSize:16}}>Added At</Text>
               <Text
                 style={{
                   borderWidth: 2,
@@ -265,7 +279,7 @@ export default function TaskDetailModal({
                 {new Date(task.addedAt).toLocaleString()}
               </Text>
 
-              <Text style={{ marginBottom: 8, fontWeight: "600", alignSelf: "center" }}>Status</Text>
+              <Text style={{ marginBottom: 8, alignSelf: "center", color: textColor, fontSize:16}}>Status</Text>
               <TouchableOpacity
                 onPress={toggleStatus}
                 style={{
@@ -284,21 +298,21 @@ export default function TaskDetailModal({
                 }}
                 activeOpacity={0.7}
               >
-                <Text style={{ fontSize: 20, marginRight: 10, }}>
+                <Text style={{ fontSize: 20, marginRight: 10, color:textColor }}>
                   {statusOptions.find((s) => s.label === status)?.icon || ""}
                 </Text>
-                <Text style={{ fontSize: 18 }}>{status}</Text>
+                <Text style={{ fontSize: 18, color: textColor}}>{status}</Text>
               </TouchableOpacity>
-                <View style={{alignItems: 'center', marginTop: 10, flexDirection: 'row', justifyContent: 'space-between', paddingRight: 30, paddingLeft: 10}}>
+                <View style={{alignItems: 'center', marginTop: -40, flexDirection: 'row', justifyContent: 'space-between', paddingRight: 20, paddingLeft: 10}}>
                    <TouchableOpacity
                     onPress={pickFile}
                    >
-                    <Image source={require('../assets/images/attach.png')} style={{width: 30, height: 30, marginTop: 10, marginLeft: 10}} />
+                    <Image source={attachIcon} style={{width: 30, height: 30, marginTop: 10, marginLeft: 10}} />
                    </TouchableOpacity>
                    <TouchableOpacity
                     onPress={openMap}
                    >
-                    <Image source={require('../assets/images/location.png')} style={{width: 30, height: 30, marginTop: 10, marginLeft: 10}} />
+                    <Image source={locationIcon} style={{width: 30, height: 30, marginTop: 10, marginLeft: 10}} />
                    </TouchableOpacity>
                 </View>
                 <View style={{marginTop:10, marginLeft: 20}}>
@@ -306,11 +320,11 @@ export default function TaskDetailModal({
                   <Text
                   numberOfLines={1}
                   ellipsizeMode="tail" 
-                  style={{maxWidth: 200}}
+                  style={{maxWidth: 200, color:textColor}}
                   >{file?.name || task.file?.name}</Text>
                 )}
                 {locationCoords && (
-                  <Text>Выбрана точка:
+                  <Text style={{color:textColor}}>Выбрана точка:
                      {locationCoords.latitude.toFixed(5)},
                      {locationCoords.longitude.toFixed(5)}
                   </Text>
@@ -326,6 +340,7 @@ export default function TaskDetailModal({
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
+                  marginTop: 12
                 }}
               >
                 <TouchableOpacity

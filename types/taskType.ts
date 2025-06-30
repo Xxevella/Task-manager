@@ -11,4 +11,5 @@ export type Task = {
     file: FileInfo;
     notificationId?: string | undefined;
     locationCoords?: {latitude: number, longitude: number} | null;
+    _flag?: "add" | "update" | "delete";
 };
