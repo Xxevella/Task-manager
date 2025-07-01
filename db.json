@@ -2,7 +2,7 @@
   "tasks": [
     {
       "id": "59ced50d-2c53-4cf4-b3a1-47361ecb9988",
-      "title": "Рлрлррш",
+      "title": "Рлрлрршdjdkk",
       "description": "",
       "dateTime": "2025-06-30T14:29:56.000Z",
       "location": "officehj",
@@ -10,8 +10,8 @@
       "status": "Completed",
       "file": null,
       "locationCoords": {
-        "latitude": 53.903070184366,
-        "longitude": 27.58052344648045
+        "latitude": 53.883595832348306,
+        "longitude": 27.59210381404196
       },
       "_flag": "update"
     },
@@ -31,14 +31,14 @@
       "id": "1323fb8a-885f-4733-91f0-fd4ba98391fd",
       "title": "Yh ji",
       "description": "",
-      "dateTime": "Mon Jun 30 2025 23:26:47 GMT+0300",
+      "dateTime": "2025-06-30T20:26:47.000Z",
       "location": "",
       "addedAt": "2025-06-30T20:26:52",
       "status": "In Progress",
       "file": null,
       "locationCoords": {
-        "latitude": 53.868309156227234,
-        "longitude": 27.558020196920744
+        "latitude": 53.49575415259384,
+        "longitude": 26.69076652427405
       }
     },
     {
@@ -104,13 +104,47 @@
       "id": "2c9a4acf-9b2a-4e45-9002-19feb27c98f9",
       "title": "Hjk",
       "description": "",
-      "dateTime": "Tue Jul 01 2025 00:05:43 GMT+0300",
+      "dateTime": "2025-06-30T21:05:43.000Z",
       "location": "",
       "addedAt": "2025-06-30T21:05:48",
       "status": "In Progress",
-      "file": null,
+      "file": {
+        "name": "IMG_20250628_000741_000.jpg",
+        "uri": "file:///data/user/0/host.exp.exponent/cache/DocumentPicker/d4bc86ae-426c-4cc9-895a-b8f3f06c94f9.jpg",
+        "size": 303339
+      },
       "locationCoords": null,
       "_flag": "add"
+    },
+    {
+      "id": "97367cdf-9b47-4acb-a4e3-525336c20ad9",
+      "title": "3333",
+      "description": "",
+      "dateTime": "2025-07-01T07:21:41.000Z",
+      "location": "",
+      "addedAt": "2025-07-01T07:21:51",
+      "status": "In Progress",
+      "file": {
+        "name": "video-e507f670dad884fed9db601e888f760a-V.mp4",
+        "uri": "file:///data/user/0/host.exp.exponent/cache/DocumentPicker/16d7cb0b-0252-48b8-80d8-c2b121682e08.mp4",
+        "size": 302363
+      },
+      "locationCoords": {
+        "latitude": 53.162680910371655,
+        "longitude": 29.259697824355236
+      },
+      "_flag": "update"
+    },
+    {
+      "id": "ff117dad-20a2-4f20-b87d-810c5ae503b3",
+      "title": "Dkdkldldld",
+      "description": "",
+      "dateTime": "Tue Jul 01 2025 10:20:32 GMT+0300",
+      "location": "",
+      "addedAt": "2025-07-01T07:21:41",
+      "status": "In Progress",
+      "file": null,
+      "locationCoords": null
     }
   ],
   "logs": [
@@ -386,6 +420,111 @@
       "action": "deleted",
       "taskId": "1c5f5811-37c6-4993-9c96-9b2c16560f9c",
       "taskTitle": "Hhhj"
+    },
+    {
+      "id": "59ced50d-2c53-4cf4-b3a1-47361ecb9988_log_1751353910456",
+      "timestamp": "2025-07-01T07:11:50.456Z",
+      "action": "updated",
+      "taskId": "59ced50d-2c53-4cf4-b3a1-47361ecb9988",
+      "taskTitle": "Рлрлррш"
+    },
+    {
+      "id": "59ced50d-2c53-4cf4-b3a1-47361ecb9988_log_1751354149761",
+      "timestamp": "2025-07-01T07:15:49.761Z",
+      "action": "updated",
+      "taskId": "59ced50d-2c53-4cf4-b3a1-47361ecb9988",
+      "taskTitle": "Рлрлррш"
+    },
+    {
+      "id": "59ced50d-2c53-4cf4-b3a1-47361ecb9988_log_1751354175209",
+      "timestamp": "2025-07-01T07:16:15.209Z",
+      "action": "updated",
+      "taskId": "59ced50d-2c53-4cf4-b3a1-47361ecb9988",
+      "taskTitle": "Рлрлррш"
+    },
+    {
+      "id": "59ced50d-2c53-4cf4-b3a1-47361ecb9988_log_1751354304107",
+      "timestamp": "2025-07-01T07:18:24.107Z",
+      "action": "updated",
+      "taskId": "59ced50d-2c53-4cf4-b3a1-47361ecb9988",
+      "taskTitle": "Рлрлрршdjdkk"
+    },
+    {
+      "id": "59ced50d-2c53-4cf4-b3a1-47361ecb9988_log_1751354314987",
+      "timestamp": "2025-07-01T07:18:34.987Z",
+      "action": "updated",
+      "taskId": "59ced50d-2c53-4cf4-b3a1-47361ecb9988",
+      "taskTitle": "Рлрлрршdjdkk"
+    },
+    {
+      "id": "59ced50d-2c53-4cf4-b3a1-47361ecb9988_log_1751354323338",
+      "timestamp": "2025-07-01T07:18:43.338Z",
+      "action": "updated",
+      "taskId": "59ced50d-2c53-4cf4-b3a1-47361ecb9988",
+      "taskTitle": "Рлрлрршdjdkk"
+    },
+    {
+      "id": "59ced50d-2c53-4cf4-b3a1-47361ecb9988_log_1751354441122",
+      "timestamp": "2025-07-01T07:20:41.122Z",
+      "action": "updated",
+      "taskId": "59ced50d-2c53-4cf4-b3a1-47361ecb9988",
+      "taskTitle": "Рлрлрршdjdkk"
+    },
+    {
+      "id": "1323fb8a-885f-4733-91f0-fd4ba98391fd_log_1751354466031",
+      "timestamp": "2025-07-01T07:21:06.031Z",
+      "action": "updated",
+      "taskId": "1323fb8a-885f-4733-91f0-fd4ba98391fd",
+      "taskTitle": "Yh ji"
+    },
+    {
+      "id": "59ced50d-2c53-4cf4-b3a1-47361ecb9988_log_1751354485436",
+      "timestamp": "2025-07-01T07:21:25.436Z",
+      "action": "updated",
+      "taskId": "59ced50d-2c53-4cf4-b3a1-47361ecb9988",
+      "taskTitle": "Рлрлрршdjdkk"
+    },
+    {
+      "id": "ff117dad-20a2-4f20-b87d-810c5ae503b3_log_1751354501972",
+      "timestamp": "2025-07-01T07:21:41.972Z",
+      "action": "added",
+      "taskId": "ff117dad-20a2-4f20-b87d-810c5ae503b3",
+      "taskTitle": "Dkdkldldld"
+    },
+    {
+      "id": "97367cdf-9b47-4acb-a4e3-525336c20ad9_log_1751354606735",
+      "timestamp": "2025-07-01T07:23:26.735Z",
+      "action": "updated",
+      "taskId": "97367cdf-9b47-4acb-a4e3-525336c20ad9",
+      "taskTitle": "3333"
+    },
+    {
+      "id": "2c9a4acf-9b2a-4e45-9002-19feb27c98f9_log_1751354644961",
+      "timestamp": "2025-07-01T07:24:04.961Z",
+      "action": "updated",
+      "taskId": "2c9a4acf-9b2a-4e45-9002-19feb27c98f9",
+      "taskTitle": "Hjk"
+    },
+    {
+      "id": "97367cdf-9b47-4acb-a4e3-525336c20ad9_log_1751354652084",
+      "timestamp": "2025-07-01T07:24:12.084Z",
+      "action": "updated",
+      "taskId": "97367cdf-9b47-4acb-a4e3-525336c20ad9",
+      "taskTitle": "3333"
+    },
+    {
+      "id": "97367cdf-9b47-4acb-a4e3-525336c20ad9_log_1751354625222",
+      "timestamp": "2025-07-01T07:23:45.222Z",
+      "action": "updated",
+      "taskId": "97367cdf-9b47-4acb-a4e3-525336c20ad9",
+      "taskTitle": "3333"
+    },
+    {
+      "id": "97367cdf-9b47-4acb-a4e3-525336c20ad9_log_1751354669179",
+      "timestamp": "2025-07-01T07:24:29.179Z",
+      "action": "updated",
+      "taskId": "97367cdf-9b47-4acb-a4e3-525336c20ad9",
+      "taskTitle": "3333"
     }
   ]
 }

@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "task-manager",
-    "slug": "task-manager",
+    "name": "tz",
+    "slug": "tz",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "taskmanager",
+    "scheme": "tz",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -17,7 +17,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.xxevella.taskmanager"
+      "package": "com.xxewella.tz"
     },
     "web": {
       "bundler": "metro",
@@ -42,7 +42,7 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "0481299b-73c5-405f-bc81-a71909ef912e"
+        "projectId": "9775ea6f-ffa4-4c70-ade4-835303b9370a"
       }
     }
   }

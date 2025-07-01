@@ -77,7 +77,7 @@ export default function TaskDetailModal({
       setDateTime(new Date(task.dateTime));
       setLocation(task.location);
       setStatus(task.status as Status);
-      setLocationCoords(task.locationCoords!);
+      setLocationCoords(task.locationCoords ?? null);
 
       Animated.timing(slideAnimation, {
         toValue: 0,
@@ -132,7 +132,8 @@ export default function TaskDetailModal({
       dateTime: dateTime.toISOString(),
       location,
       status,
-      file
+      file,
+      locationCoords
     });
     onClose();
   };
